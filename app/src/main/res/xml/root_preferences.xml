@@ -1,0 +1,133 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory android:background="@color/colorPrimaryDark">
+        <PreferenceCategory
+            android:layout_width="match_parent"
+            app:layout="@layout/pref_about_ic">
+            <PreferenceCategory
+            android:layout_width="match_parent"
+            app:layout="@layout/pref_app" />
+            <EditTextPreference
+                android:selectable="false"
+                android:shouldDisableView="true"
+                app:key="version"
+                app:summary="@string/version"
+                app:useSimpleSummaryProvider="true" />
+            <PreferenceCategory
+                android:layout_width="match_parent"
+                app:layout="@layout/pref_copyright" />
+        </PreferenceCategory>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/ic_settings_select"
+        app:title="@string/ip_header">
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_debug"
+            android:key="sw_dev_mode"
+            android:summary="@string/switch_developer_desc"
+            android:summaryOff="@string/switch_developer_desc"
+            android:summaryOn="@string/switch_developer_desc_on"
+            android:title="@string/switch_developer_mode" />
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_settings_applications"
+            android:key="sw_reset_default"
+            android:summary="@string/switch_set_default_desc"
+            android:summaryOff="@string/switch_set_default_desc"
+            android:summaryOn="@string/switch_set_default_desc_on"
+            android:title="@string/switch_set_default" />
+        <!--        <Preference-->
+        <!--            android:icon="@drawable/ic_user_settings"-->
+        <!--            android:selectable="false"-->
+        <!--            android:shouldDisableView="false"-->
+        <!--            android:title="@string/user_settings_title" />-->
+    </PreferenceCategory>
+    <PreferenceCategory
+
+        android:icon="@drawable/ic_user_settings"
+        app:title="@string/user_settings_title">
+
+        <EditTextPreference
+            android:defaultValue="@string/edit_home_ssid_default"
+            android:icon="@drawable/ic_router"
+            android:key="home_ssid"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/edit_home_ssid_default"
+            android:title="@string/edit_home_ssid" />
+        <EditTextPreference
+            android:defaultValue="@string/edit_esp_ip_default"
+            android:icon="@drawable/ic_node_server"
+            android:key="edit_esp_ip"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/edit_esp_ip_default"
+            android:title="@string/edit_esp_ip" />
+        <EditTextPreference
+            android:defaultValue="@string/edit_interval_default"
+            android:icon="@drawable/ic_alarm"
+            android:inputType="number"
+            android:key="edit_measurement"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/edit_interval_default"
+            android:title="@string/edit_measurement_interval" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:icon="@drawable/ic_gr_debug"
+        app:title="@string/advanced_group_title">
+
+        <EditTextPreference
+            android:defaultValue="@string/default_debug_sh_url"
+            android:icon="@drawable/ic_menu_smart_home"
+            android:inputType="textCapWords"
+            android:key="dev_sh_url"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/default_debug_sh_url"
+            android:title="@string/edit_dev_sh" />
+        <EditTextPreference
+            android:defaultValue="@string/default_debug_br_url"
+            android:icon="@drawable/ic_menu_bathroom_control"
+            android:inputType="textCapWords"
+            android:key="dev_br_url"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/default_debug_br_url"
+            android:title="@string/edit_dev_br" />
+        <EditTextPreference
+            android:defaultValue="@string/default_debug_stats_url"
+            android:icon="@drawable/ic_menu_statistic"
+            android:inputType="textCapWords"
+            android:key="dev_stats_url"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/default_debug_stats_url"
+            android:title="@string/edit_dev_stats" />
+        <EditTextPreference
+            android:defaultValue="@string/default_debug_test_url"
+            android:icon="@drawable/ic_menu_test_measurement"
+            android:inputType="textCapWords"
+            android:key="dev_test_url"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/default_debug_test_url"
+            android:title="@string/edit_dev_test" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ Jeneral Samopal Company
+  ~ Design and Programming by Alex Dovby
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@android:dimen/app_icon_size"
+    android:foregroundGravity="center_vertical"
+    android:keepScreenOn="false"
+    android:minWidth="@android:dimen/thumbnail_width">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/copiright_margin"
+        android:layout_marginRight="@dimen/copiright_margin"
+        android:text="@string/about_copyright"
+        android:textColor="@color/small_text"
+        android:textSize="@dimen/small_font" />
+</FrameLayout>

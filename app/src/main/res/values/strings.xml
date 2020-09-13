@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">Smart Home</string>
+    <string name="empty" />
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- URL -->
+    <string name="sh_url">file:///android_asset/main_sha.html</string>
+    <string name="br_url">file:///android_asset/main_wra.html</string>
+    <string name="stats_url">file:///android_asset/statistic/index.html</string>
+    <string name="test_url">file:///android_asset/test_measurement/index.html</string>
+    <!--    <string name="stats_url">http://winecard.ltd.ua/dev/smart_home/hw_statistic/index.html</string>-->
+    <!--    <string name="stats_url_local">file:///android_asset/statistic/index.html</string>-->
+
+
+    <string name="default_debug_br_url">http://192.168.1.2/SmartHome/mainWRD.html</string>
+    <string name="default_debug_sh_url">http://192.168.1.2/SmartHome/mainSHD.html</string>
+    <string name="default_debug_stats_url">http://192.168.1.2:3000</string>
+    <string name="default_debug_test_url">http://192.168.1.2:3000</string>
+
+    <!-- Drawer Menu -->
+    <string name="menu_title">SMART HOME CONTROL</string>
+    <string name="menu_deck">ESP8266 Server</string>
+
+    <string name="menu_bath_room">Bathroom Climate Control</string>
+    <string name="menu_smart_home">Smart Home Control</string>
+    <string name="menu_statistic">Hot Water Statistics</string>
+    <string name="menu_test">Test Measurement</string>
+    <string name="menu_settings">Preferences</string>
+
+
+    <!-- string settings general -->
+    <string name="switch_developer_mode">Developer Mode</string>
+    <string name="switch_developer_desc">Set Developer Mode</string>
+    <string name="switch_developer_desc_on">Set Normal Mode</string>
+    <string name="switch_set_default">Default Settings</string>
+    <string name="switch_set_default_desc">Reset Default Settings</string>
+    <string name="switch_set_default_desc_on">For the changes to take effect return to application</string>
+    <string name="user_settings_title">SETTINGS MEASUREMENT</string>
+    <string name="edit_home_ssid">Home WiFi SSID</string>
+    <string name="edit_home_ssid_default">JSC-ASUS5G</string>
+    <string name="edit_esp_ip">ESP 8266 Server IP</string>
+    <string name="edit_esp_ip_default">http://192.168.1.77</string>
+    <string name="edit_measurement_interval">Measurement Interval (second)</string>
+    <string name="ssid_default">DEV</string>
+    <string name="home_network">Home Network</string>
+    <string name="guest_network">Guest Network</string>
+    <string name="edit_interval_default">120</string>
+
+    <!-- string settings advanced -->
+    <string name="advanced_group_title">SETTING DEVELOPER URL</string>
+    <string name="edit_dev_br">Bathroom Control</string>
+    <string name="edit_dev_sh">Smart Home Control</string>
+    <string name="edit_dev_stats">Bathroom Statistic</string>
+    <string name="edit_dev_test">Test Measurement</string>
+
+
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+    <!-- Massages -->
+
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="msg_no_sd">There is no any sd card</string>
+
+    <!-- Preference Titles -->
+    <string name="ip_header">PANEL CONFIGURETION</string>
+
+    <!-- Configure Preference -->
+    <!-- Debug Preferences -->
+    <!-- About Preference -->
+    <string name="version">Version • </string>
+    <string name="about_copyright">© 2020 Jeneral Samopal Company \nDesign and Programming by Alex Dovby</string>
+    <string name="msg_exit">Press once again to exit!</string>
+
+    <string name="about_app_title">Smart Home Control</string>
+    <string name="action_developer_mode">Dev</string>
+
+    <string name="title_list_db_activity">Measurement List</string>
+    <string name="menu_item_clear">Clear</string>
+    <string name="msg_list_records">List records is empty</string>
+
+    <!-- dialog  exit app -->
+    <string name="title_dialog">Delete Records in Database</string>
+    <string name="message_dialog">Do you want to delete the last record or all entries in the database?</string>
+
+    <string name="button_last_records">Last</string>
+    <string name="button_all_records">All</string>
+    <string name="button_cancel">Cancel</string>
+</resources>

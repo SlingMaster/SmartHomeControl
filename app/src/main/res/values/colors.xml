@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorTextDesc">#B0BEC5</color>
+    <color name="navBar">#000000</color>
+
+    <color name="small_text">#455a64</color>
+    <color name="colorIcons">#A9A135</color>
+    <color name="colorIconsTitle">#03DAC5</color>
+
+    <color name="nav_iconTint">#00B8D1</color>
+    <color name="nav_TextColor">@android:color/white</color>
+
+    <color name="colorDebugIcon">#f9a825</color>
+    <color name="item_text_date">#cfd8dc</color>
+    <color name="item_text_time">#7D929D</color>
+    <color name="item_text_delta">#0faba5</color>
+    <color name="item_text_warmer">#FF0031</color>
+</resources>

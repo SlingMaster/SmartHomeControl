@@ -1,0 +1,78 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/ic_launcher_background</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/colorTextDesc</item>
+        <item name="android:navigationBarColor">@color/navBar</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">false</item>
+        <!--        <item name="android:windowBackground">@null</item>  -->
+
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+    </style>
+
+    <!--    test style-->
+    <style name="AppActivityTheme" parent="AppTheme">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark</item>
+        <item name="android:colorForeground">@android:color/darker_gray</item>
+        <!--item name="android:colorBackground">@color/colorPreferencesBg</item>
+        <item name="android:colorForeground">@color/item_text_time</item-->
+        <item name="android:textColorPrimary">@android:color/secondary_text_light_nodisable</item>
+        <item name="android:paddingLeft">@dimen/list_padding</item>
+        <item name="android:paddingRight">@dimen/list_padding</item>
+        <item name="android:textAlignment">center</item>
+        <!--        <item name="android:textColorPrimary">@color/colorAccent</item>-->
+    </style>
+    <!--    /test style-->
+
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+<!--        <item name="android:background">@color/black_overlay</item> -->
+        <item name="android:background">@color/colorIconsTitle</item>
+    </style>
+
+    <!-- Preference Screen Theme -->
+
+
+    <style name="PreferencesTheme" parent="Base.Theme.AppCompat">
+        <item name="android:windowBackground">@drawable/gradient_window</item>
+        <!--<item name="android:colorAccent">@color/colorAccent</item>-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <!--<item name="android:textColorPrimary">@color/colorTextBody</item>-->
+        <item name="android:textColorSecondary">@color/colorTextDesc</item>
+
+
+        <item name="android:navigationBarColor">@color/navBar</item>
+
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#f1f1f1</item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221f1f</item>
+
+        <!-- PreferencesTheme ActionBar Style -->
+        <!--        <item name="actionBarStyle">@style/ActionBar.Solid</item>-->
+    </style>
+    <!--    <style name="ActionBar.Solid" parent="@style/Widget.AppCompat.ActionBar.Solid">-->
+    <!--        &lt;!&ndash; PreferencesTheme ActionBar Style &ndash;&gt;-->
+    <!--        &lt;!&ndash;        <item name="background">@color/colorPrimary</item>&ndash;&gt;-->
+    <!--        <item name="background">#42221f1f</item>-->
+    <!--    </style>-->
+
+
+</resources>

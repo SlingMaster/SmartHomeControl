@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020.
+  ~ JSC
+  ~ Design and Programming by Alex Dovby
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:id="@+id/list_item_image_view"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:contentDescription="@string/empty"
+        android:scaleType="center"
+        app:srcCompat="@drawable/ic_menu_test_measurement" />
+
+    <LinearLayout
+        android:layout_width="@dimen/item_text_width"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_item_text_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:singleLine="true"
+            android:text="@string/about_app_title"
+            android:textColor="@color/item_text_date"
+            android:textSize="@dimen/item_primary_font_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/list_item_text_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/item_text_time"
+                android:textSize="@dimen/item_secondary_font_size"
+                tools:text="@string/action_developer_mode" />
+
+            <TextView
+                android:id="@+id/list_item_text_delta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/item_text_delta"
+                android:textSize="@dimen/item_secondary_font_size"
+                tools:text="@string/edit_interval_default" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/list_item_text_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingStart="@dimen/fab_margin"
+        android:paddingEnd="@dimen/fab_margin"
+        android:singleLine="true"
+        android:text="@string/edit_interval_default"
+        android:textAlignment="textEnd"
+        android:textColor="@color/item_text_date"
+        android:textSize="@dimen/item_large_font_size" />
+
+</LinearLayout>
