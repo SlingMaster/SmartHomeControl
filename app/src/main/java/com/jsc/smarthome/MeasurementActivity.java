@@ -220,9 +220,9 @@ public class MeasurementActivity extends AppCompatActivity {
 
             Toast.makeText(getBaseContext(), "BD Empty", Toast.LENGTH_SHORT).show();
             // test showListBD ========
-            String jsonStr = "[{\"date\":\"Test\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
-            jsonDataBaseArray = parseFileDataBase(jsonStr);
-            showListBD(getApplicationContext());
+//            String jsonStr = "[{\"date\":\"Test\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
+//            jsonDataBaseArray = parseFileDataBase(jsonStr);
+//            showListBD(getApplicationContext());
             // ========================
 
             FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
