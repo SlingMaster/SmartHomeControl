@@ -225,6 +225,8 @@ public class MeasurementActivity extends AppCompatActivity {
             showListBD(getApplicationContext());
             // ========================
 
+            FileUtils.writeToFile("some data", getApplicationContext());
+            String str = FileUtils.readFromFile(getApplicationContext());
             FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
         }
     }
