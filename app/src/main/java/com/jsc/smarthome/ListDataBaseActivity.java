@@ -121,19 +121,31 @@ public class ListDataBaseActivity extends AppCompatActivity {
 
     // --------------------------
     private void createJsonList(String jsonList) {
-        // System.out.println("createJsonList: " + jsonList);
+        String lastDate = "";
         try {
-
             JSONArray jsonArray = new JSONArray(jsonList);
             for (int i = 0; i < jsonArray.length(); i++) {
-
                 try {
                     JSONObject obj = new JSONObject(jsonArray.get(i).toString());
-                    System.out.println("trace | reateJsonList #" + i + " | " + obj.optString("date"));
+                    String curDate = obj.optString("date");
+                    curDate = curDate.substring(curDate.length() - 4);
+                    System.out.println("trace | JsonList #" + i + " | " + lastDate + " | " + curDate);
+                    String sendData;
+                    if (i == 0) {
+                        sendData = "{\"date\":\"" + curDate + "  \"}";
+                        addItem(sendData);
+                    } else {
+                        if (!curDate.equalsIgnoreCase(lastDate)) {
+                            sendData = "{\"date\":\"" + curDate + "  \"}";
+                            addItem(sendData);
+                        }
+                    }
+                    addItem(jsonArray.get(i).toString());
+                    lastDate = curDate;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                addItem(jsonArray.get(i).toString());
+
             }
 
         } catch (JSONException e) {

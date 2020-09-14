@@ -10,6 +10,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 //import java.security.acl.Permission;
 
@@ -140,7 +145,11 @@ public class MeasurementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurement);
+        preference = PreferenceManager.getDefaultSharedPreferences(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        cur_ssid = getCurrentSsid(getApplicationContext());
+        System.out.println("\n\nCreate");
+        System.out.println("\nCur ssid : " + cur_ssid);
 
         System.out.println("trace | Data Directory : " + Environment.getDataDirectory());
 //        System.out.println("trace | External Storage : " + getDBPath(this.getApplicationContext());
@@ -217,14 +226,12 @@ public class MeasurementActivity extends AppCompatActivity {
         if (strBD != null) {
             jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
         } else {
-
             Toast.makeText(getBaseContext(), "BD Empty", Toast.LENGTH_SHORT).show();
             // test showListBD ========
-            String jsonStr = "[{\"date\":\"Test\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
+            String jsonStr = "[{\"date\":\"10 February 2017\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":false,\\\"delta\\\":\\\"Δ -2.5°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
             jsonDataBaseArray = parseFileDataBase(jsonStr);
-            showListBD(getApplicationContext());
+//            showListBD(getApplicationContext());
             // ========================
-
             FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
         }
     }
@@ -234,7 +241,7 @@ public class MeasurementActivity extends AppCompatActivity {
     // ===================================================
     public void webViewEvents(int request, final String jsonString) {
         JSONObject requestContent = new JSONObject();
-        System.out.println("webViewEvents | Request : " + request + "\n" + jsonString);
+        System.out.println("trace | webViewEvents | Request : " + request + "\n" + jsonString);
         JSONObject uiRequest;
         try {
             uiRequest = new JSONObject(jsonString);
@@ -257,19 +264,23 @@ public class MeasurementActivity extends AppCompatActivity {
                 assert newWebView != null;
                 newWebView.callbackToUI(JSConstants.CMD_INIT, CustomWebView.createResponse(requestContent, initData(this)));
                 break;
+            case JSConstants.CMD_MEASUREMENT_START:
+                System.out.println("trace | MEASUREMENT START | " + request + " \n" + jsonString);
+                break;
             case JSConstants.CMD_MEASUREMENT_RESULT:
                 System.out.println("trace | request : " + request);
                 jsonDataBaseArray.put(jsonString);
                 FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
                 break;
             case JSConstants.CMD_SHOW_LIST:
+                System.out.println("trace | Show list database");
                 jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
                 // test showListBD ========
-                if (jsonDataBaseArray == null) {
-                    String jsonStr = "[{\"date\":\"18 January 2018\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
-                    jsonDataBaseArray = parseFileDataBase(jsonStr);
-                }
-                // ========================
+//               if (jsonDataBaseArray == null) {
+//                    String jsonStr = "[{\"date\":\"18 January 2018\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":false,\\\"delta\\\":\\\"Δ -3.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
+//                    jsonDataBaseArray = parseFileDataBase(jsonStr);
+//                }
+//                // ========================
                 showListBD(getApplicationContext());
                 break;
             case JSConstants.EVT_PAGE_FINISHED:
@@ -282,13 +293,14 @@ public class MeasurementActivity extends AppCompatActivity {
     }
 
     public JSONObject initData(@NonNull Context context) {
+        System.out.println("trace | Start initData");
         boolean is_home_network;
         JSONObject obj = new JSONObject();
 
         String home_ssid = preference.getString("home_ssid", getResources().getString(R.string.ssid_default));
         is_home_network = home_ssid.equalsIgnoreCase(cur_ssid);
-
         System.out.println("trace | cur_ssid: " + cur_ssid + " | home_ssid:" + home_ssid + " | " + is_home_network);
+
         try {
             obj.put("android_os", android.os.Build.VERSION.SDK_INT);
             obj.put("language", "en");
@@ -297,31 +309,12 @@ public class MeasurementActivity extends AppCompatActivity {
             obj.put("is_home_network", is_home_network);
             obj.put("network", (is_home_network ? getResources().getString(R.string.home_network) : getResources().getString(R.string.guest_network)));
             obj.put("ssid", cur_ssid);
+            System.out.println("trace | initData " + obj.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return obj;
     }
-
-    // ===================================
-//    public static JSONObject initData(@NonNull Context context) {
-//        JSONObject obj = new JSONObject();
-//        try {
-//            obj.put("android_os", android.os.Build.VERSION.SDK_INT);
-//            obj.put("language", "en");
-//            obj.put("android_app", true);
-//
-//            // string to int ---------------------
-////            String tempNumStr = preference.getString("start_day", "6");
-////            int num = Integer.parseInt(tempNumStr);
-////            obj.put("start_day", num);
-//
-//            // -----------------------------------
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return obj;
-//    }
 
     // ===================================
     public static JSONArray parseFileDataBase(String jsonList) {
@@ -346,4 +339,29 @@ public class MeasurementActivity extends AppCompatActivity {
         System.out.println("trace | Permissions Result OK");
     }
 
+    // ===================================
+    // utils
+    // ===================================
+    public static String getCurrentSsid(Context context) {
+        String ssid = null;
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo;
+        if (cm != null) {
+            networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo == null) {
+                return null;
+            }
+
+            if (networkInfo.isConnected()) {
+                final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                if (wifiManager != null) {
+                    final WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+                    if (connectionInfo != null) {
+                        ssid = connectionInfo.getSSID().replaceAll("\"", "");
+                    }
+                }
+            }
+        }
+        return ssid;
+    }
 }

@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
     private static final boolean AUTO_HIDE = true;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mVisible = true;
         setContentView(R.layout.activity_main);
+        preference = PreferenceManager.getDefaultSharedPreferences(this);
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

@@ -8,6 +8,7 @@
 .externalNativeBuild
 .cxx
 *.ini
+*.bat
 /app/build/
 /app/release/
 /app/version.properties

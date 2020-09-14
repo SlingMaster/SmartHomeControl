@@ -87,18 +87,25 @@ public class MyCustomAdapter extends BaseAdapter {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                itemDate.setText(obj.optString("date"));
-                itemTime.setText(obj.optString("time"));
-                String str_tmp = "Time: " + obj.optString("time");
-                itemTime.setText(str_tmp);
-                str_tmp = obj.optString("value") + "°C";
-                itemValue.setText(str_tmp);
-                itemIcon.setColorFilter(getIconColor(obj.optString("attribute")));
-                itemDelta.setText(obj.optString("delta"));
-                if (obj.optBoolean("warmer")) {
-                    itemDelta.setTextColor(ContextCompat.getColor(context, R.color.item_text_warmer));
+                String date = obj.optString("date");
+                if (date.length() < 10) {
+                    itemDate.setText("");
+                    itemValue.setText(date);
+                    itemIcon.setImageResource(R.drawable.ic_title);
+                    view.setBackgroundResource(R.color.colorTitleList);
+                } else {
+                    itemDate.setText(date);
+                    itemTime.setText(obj.optString("time"));
+                    String str_tmp = "Time: " + obj.optString("time");
+                    itemTime.setText(str_tmp);
+                    str_tmp = obj.optString("value") + "°C";
+                    itemValue.setText(str_tmp);
+                    itemIcon.setColorFilter(getIconColor(obj.optString("attribute")));
+                    itemDelta.setText(obj.optString("delta"));
+                    if (obj.optBoolean("warmer")) {
+                        itemDelta.setTextColor(ContextCompat.getColor(context, R.color.item_text_warmer));
+                    }
                 }
-                // view.setBackgroundResource(bgColor);
                 // itemName.setBackgroundColor(ContextCompat.getColor(context, bgColor));
             }
         }
