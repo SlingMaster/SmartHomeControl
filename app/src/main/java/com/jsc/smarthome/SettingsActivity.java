@@ -6,31 +6,33 @@
 
 package com.jsc.smarthome;
 
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 public class SettingsActivity extends AppCompatActivity {
-    public static String curVersion;
-
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-            // set version
-            if (preference.getKey().equals("version")) {
-                stringValue = "Version • " + curVersion;
-            }
-            preference.setSummary(stringValue);
-            return true;
-        }
-    };
+//    public static String curVersion;
+//
+//    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+//        @Override
+//        public boolean onPreferenceChange(Preference preference, Object value) {
+//            String stringValue = value.toString();
+//            // set version
+//            if (preference.getKey().equals("version")) {
+//                stringValue = "Version • " + curVersion;
+//            }
+//            preference.setSummary(stringValue);
+//            return true;
+//        }
+//    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -44,8 +46,16 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        curVersion = getVersionApp();
         setContentView(R.layout.settings_activity);
+
+        // set version -------------
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+        @SuppressLint("CommitPrefEdits")
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString("version", getResources().getString(R.string.version) + getVersionApp());
+        editor.apply();
+        // -------------------------
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.settings, new SettingsFragment())
@@ -56,22 +66,21 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // ===================================
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
         }
     }
 
-    // ----------------------------------------
-    public String getVersionApp() {
-
+    // ===================================
+    private String getVersionApp() {
         String versionName = "***";
         PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            versionName = pInfo.versionCode + "." + pInfo.versionName;
+            versionName = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

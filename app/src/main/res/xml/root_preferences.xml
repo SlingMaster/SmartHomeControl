@@ -1,14 +1,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
     <PreferenceCategory android:background="@color/colorPrimaryDark">
+
         <PreferenceCategory
             android:layout_width="match_parent"
             app:layout="@layout/pref_about_ic">
             <PreferenceCategory
-            android:layout_width="match_parent"
-            app:layout="@layout/pref_app" />
+                android:layout_width="match_parent"
+                app:layout="@layout/pref_app" />
             <EditTextPreference
                 android:selectable="false"
                 android:shouldDisableView="true"
@@ -62,7 +61,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/edit_home_ssid_default"
-            android:title="@string/edit_home_ssid" />
+            android:title="@string/edit_home_ssid"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="@string/edit_esp_ip_default"
             android:icon="@drawable/ic_node_server"
@@ -70,7 +70,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/edit_esp_ip_default"
-            android:title="@string/edit_esp_ip" />
+            android:title="@string/edit_esp_ip"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="@string/edit_interval_default"
             android:icon="@drawable/ic_alarm"
@@ -79,7 +80,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/edit_interval_default"
-            android:title="@string/edit_measurement_interval" />
+            android:title="@string/edit_measurement_interval"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
     <PreferenceCategory
@@ -95,7 +97,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/default_debug_sh_url"
-            android:title="@string/edit_dev_sh" />
+            android:title="@string/edit_dev_sh"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="@string/default_debug_br_url"
             android:icon="@drawable/ic_menu_bathroom_control"
@@ -115,7 +118,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/default_debug_stats_url"
-            android:title="@string/edit_dev_stats" />
+            android:title="@string/edit_dev_stats"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="@string/default_debug_test_url"
             android:icon="@drawable/ic_menu_test_measurement"
@@ -125,7 +129,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/default_debug_test_url"
-            android:title="@string/edit_dev_test" />
+            android:title="@string/edit_dev_test"
+            app:useSimpleSummaryProvider="true" />
 
 
     </PreferenceCategory>
