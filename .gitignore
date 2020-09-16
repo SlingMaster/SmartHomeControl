@@ -11,3 +11,4 @@
 /app/build/
 /app/release/
 /app/version.properties
+*.bat

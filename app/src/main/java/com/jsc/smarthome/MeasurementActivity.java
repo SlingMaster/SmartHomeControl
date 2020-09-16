@@ -208,27 +208,38 @@ public class MeasurementActivity extends AppCompatActivity {
         handler.postDelayed(() ->
                 Toast.makeText(getBaseContext(), "TimeOut • onPageFinished",
                         Toast.LENGTH_SHORT).show(), 1000);
+        // load json BD results ------------------------------
+        // uchitel code
+        String strBD = FileUtils.readFromFile(getApplicationContext());
+        if (strBD != null) {
+            jsonDataBaseArray = parseFileDataBase(strBD);
+        } else {
+            String itemStr = "[{\"date\":\"20 Desmber 2019\",\"time\":\"11:47\",\"value\":\"40.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"]";
+            FileUtils.writeToFile(itemStr, getApplicationContext());
+        }
 
         // load json BD results ------------------------------
-        String strBD = FileUtils.readFile(this, FILE_DB);
-        System.out.println("trace | ========= Read BD File : " + FileUtils.readFile(this, FILE_DB));
-
-
-        if (strBD != null) {
-            jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
-        } else {
-
-            Toast.makeText(getBaseContext(), "BD Empty", Toast.LENGTH_SHORT).show();
-            // test showListBD ========
-            String jsonStr = "[{\"date\":\"Test\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
-            jsonDataBaseArray = parseFileDataBase(jsonStr);
-            showListBD(getApplicationContext());
-            // ========================
-
-            FileUtils.writeToFile("some data", getApplicationContext());
-            String str = FileUtils.readFromFile(getApplicationContext());
-            FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
-        }
+//        String strBD = FileUtils.readFile(this, FILE_DB);
+//        System.out.println("trace | ========= Read BD File : " + FileUtils.readFile(this, FILE_DB));
+//
+//
+//        if (strBD != null) {
+//            jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
+//        } else {
+//
+//            Toast.makeText(getBaseContext(), "BD Empty", Toast.LENGTH_SHORT).show();
+//            // test showListBD ========
+//            String jsonStr = "[{\"date\":\"Test\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
+//            jsonDataBaseArray = parseFileDataBase(jsonStr);
+//            showListBD(getApplicationContext());
+//            // ========================
+//            String itemStr = "[{\"date\":\"Test\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"]";
+//
+//            FileUtils.writeToFile(itemStr, getApplicationContext());
+        String str = FileUtils.readFromFile(getApplicationContext());
+        System.out.println("trace | Read From File : " + str);
+//            FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
+//        }
     }
 
     // ===================================================
@@ -249,7 +260,7 @@ public class MeasurementActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Request : " + request);
+        System.out.println("Request : " + request + " | requestContent "+ requestContent);
         switch (request) {
             case JSConstants.EVT_MAIN_TEST:
                 assert newWebView != null;
@@ -261,16 +272,24 @@ public class MeasurementActivity extends AppCompatActivity {
                 break;
             case JSConstants.CMD_MEASUREMENT_RESULT:
                 System.out.println("trace | request : " + request);
-                jsonDataBaseArray.put(jsonString);
-                FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
+                // test ===========
+                String itemStr = "{\"date\":\"20 September 2020\",\"time\":\"11:47\",\"value\":\"32.6\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"";
+                jsonDataBaseArray.put(itemStr);
+                // ================
+
+//                FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
+                // jsonDataBaseArray.put(jsonString);
+                FileUtils.writeToFile(jsonDataBaseArray.toString(), getApplicationContext());
                 break;
             case JSConstants.CMD_SHOW_LIST:
-                jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
+                String strBD = FileUtils.readFromFile(getApplicationContext());
+                jsonDataBaseArray = parseFileDataBase(strBD);
+//                jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
                 // test showListBD ========
-                if (jsonDataBaseArray == null) {
-                    String jsonStr = "[{\"date\":\"18 January 2018\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
-                    jsonDataBaseArray = parseFileDataBase(jsonStr);
-                }
+//                if (jsonDataBaseArray == null) {
+//                    String jsonStr = "[{\"date\":\"18 January 2018\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":true,\\\"delta\\\":\\\"Δ -2.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
+//                    jsonDataBaseArray = parseFileDataBase(jsonStr);
+//                }
                 // ========================
                 showListBD(getApplicationContext());
                 break;
