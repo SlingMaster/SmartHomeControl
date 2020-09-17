@@ -69,6 +69,9 @@
 
     <!-- Configure Preference -->
     <!-- Debug Preferences -->
+    <string name="cache_title">Cache Clear</string>
+    <string name="cache_summary_on">Cache Clear is ON</string>
+    <string name="cache_summary_off">Cache Clear is OFF</string>
     <!-- About Preference -->
     <string name="version">Version • </string>
     <string name="about_copyright">© 2020 Jeneral Samopal Company \nDesign and Programming by Alex Dovby</string>

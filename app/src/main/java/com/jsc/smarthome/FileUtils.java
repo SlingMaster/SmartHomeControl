@@ -8,6 +8,7 @@ package com.jsc.smarthome;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -16,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 class FileUtils {
@@ -54,6 +57,43 @@ class FileUtils {
         }
     }
 
+    static void writeToFile(String data,Context appContext) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(appContext.openFileOutput("config_file.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("FileUtils", "File write failed: " + e.toString());
+        }
+    }
+
+    static String readFromFile(Context appContext) {
+        try {
+            InputStream inputStream = appContext.openFileInput("config_file.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString).append("\n");
+                }
+
+                inputStream.close();
+                return stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("FileUtils", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("FileUtils", "Can not read file: " + e.toString());
+        }
+
+        return "";
+    }
     // =========================================================
     static String readFile(Activity main, String filePath) {
         String state = Environment.getExternalStorageState();

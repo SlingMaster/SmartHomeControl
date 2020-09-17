@@ -146,20 +146,47 @@ public class MeasurementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurement);
         preference = PreferenceManager.getDefaultSharedPreferences(this);
+        System.out.println("trace | preference : measurement " + preference.getString("edit_measurement", "12"));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         cur_ssid = getCurrentSsid(getApplicationContext());
         System.out.println("\n\nCreate");
         System.out.println("\nCur ssid : " + cur_ssid);
 
-        System.out.println("trace | Data Directory : " + Environment.getDataDirectory());
-//        System.out.println("trace | External Storage : " + getDBPath(this.getApplicationContext());
         Permission.requestMultiplePermissions(this, Permission.PERMISSION_REQUEST_CODE);
-//        checkPermissions();
+        System.out.println("trace | Data Directory : " + Environment.getDataDirectory());
         webContainer = findViewById(R.id.web_container);
         // load screen -----------------------------
         loadHtml(getResources().getString(R.string.test_url));
 
+        findViewById(R.id.btn_test).setOnClickListener(view -> {
+                    // test ===========
+                    String itemStr = "{\"date\":\"20 September 2020\",\"time\":\"11:47\",\"value\":\"32.6\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"";
+                    jsonDataBaseArray.put(itemStr);
+                    FileUtils.writeToFile(jsonDataBaseArray.toString(), getApplicationContext());
+                    // ================
+                }
+        );
+    }
 
+    // ===================================
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_CLEAR) {
+                String idClear = data.getStringExtra("clear");
+                if (idClear != null && idClear.equalsIgnoreCase("all_records")) {
+                    jsonDataBaseArray = new JSONArray();
+                    // test ===========
+                    String itemStr = "{\"date\":\"10 Desember 2019\",\"time\":\"11:47\",\"value\":\"32.6\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"";
+                    jsonDataBaseArray.put(itemStr);
+                    // ================
+                } else {
+                    jsonDataBaseArray.remove(jsonDataBaseArray.length() - 1);
+                }
+                FileUtils.writeToFile(jsonDataBaseArray.toString(), getApplicationContext());
+            }
+        }
     }
 
     // ===================================
@@ -205,7 +232,7 @@ public class MeasurementActivity extends AppCompatActivity {
         System.out.println("trace | loadHtml:" + url);
         newWebView = createWebView();
         webContainer.addView(newWebView);
-//        newWebView.clearCache(preference.getBoolean("sw_clear_cache", false));
+        newWebView.clearCache(preference.getBoolean("sw_clear_cache", false));
         newWebView.loadUrl(url);
     }
 
@@ -214,26 +241,23 @@ public class MeasurementActivity extends AppCompatActivity {
         Handler handler = new Handler();
 //        Toast.makeText(getBaseContext(), "TimeOut • onPageFinished", Toast.LENGTH_SHORT).show();
 
-        handler.postDelayed(() ->
-                Toast.makeText(getBaseContext(), "TimeOut • onPageFinished",
-                        Toast.LENGTH_SHORT).show(), 1000);
+//        handler.postDelayed(() ->
+//                Toast.makeText(getBaseContext(), "TimeOut • onPageFinished",
+//                        Toast.LENGTH_SHORT).show(), 1000);
 
         // load json BD results ------------------------------
-        String strBD = FileUtils.readFile(this, FILE_DB);
-        System.out.println("trace | ========= Read BD File : " + FileUtils.readFile(this, FILE_DB));
-
-
+        // uchitel code
+        String strBD = FileUtils.readFromFile(getApplicationContext());
         if (strBD != null) {
-            jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
+            jsonDataBaseArray = parseFileDataBase(strBD);
         } else {
-            Toast.makeText(getBaseContext(), "BD Empty", Toast.LENGTH_SHORT).show();
-            // test showListBD ========
-            String jsonStr = "[{\"date\":\"10 February 2017\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":false,\\\"delta\\\":\\\"Δ -2.5°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
-            jsonDataBaseArray = parseFileDataBase(jsonStr);
-//            showListBD(getApplicationContext());
-            // ========================
-            FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
+            String itemStr = "[{\"date\":\"20 Desmber 2019\",\"time\":\"11:47\",\"value\":\"40.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"]";
+            FileUtils.writeToFile(itemStr, getApplicationContext());
         }
+
+        String str = FileUtils.readFromFile(getApplicationContext());
+        System.out.println("trace | Read From File : " + str);
+
     }
 
     // ===================================================
@@ -254,7 +278,7 @@ public class MeasurementActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Request : " + request);
+        System.out.println("Request : " + request + " | requestContent " + requestContent);
         switch (request) {
             case JSConstants.EVT_MAIN_TEST:
                 assert newWebView != null;
@@ -266,21 +290,17 @@ public class MeasurementActivity extends AppCompatActivity {
                 break;
             case JSConstants.CMD_MEASUREMENT_START:
                 System.out.println("trace | MEASUREMENT START | " + request + " \n" + jsonString);
+
                 break;
             case JSConstants.CMD_MEASUREMENT_RESULT:
                 System.out.println("trace | request : " + request);
                 jsonDataBaseArray.put(jsonString);
-                FileUtils.SaveFile(FILE_DB, jsonDataBaseArray.toString());
+                FileUtils.writeToFile(jsonDataBaseArray.toString(), getApplicationContext());
+                showListBD(getApplicationContext());
                 break;
             case JSConstants.CMD_SHOW_LIST:
-                System.out.println("trace | Show list database");
-                jsonDataBaseArray = parseFileDataBase(FileUtils.readFile(this, FILE_DB));
-                // test showListBD ========
-//               if (jsonDataBaseArray == null) {
-//                    String jsonStr = "[{\"date\":\"18 January 2018\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"},\"{\\\"date\\\":\\\"14 February 2018\\\",\\\"time\\\":\\\"12:47\\\",\\\"value\\\":\\\"35.0\\\",\\\"attribute\\\":\\\"cool\\\",\\\"warmer\\\":false,\\\"delta\\\":\\\"Δ -3.2°C\\\",\\\"action\\\":\\\"save result\\\"}\"]";
-//                    jsonDataBaseArray = parseFileDataBase(jsonStr);
-//                }
-//                // ========================
+                String strBD = FileUtils.readFromFile(getApplicationContext());
+                jsonDataBaseArray = parseFileDataBase(strBD);
                 showListBD(getApplicationContext());
                 break;
             case JSConstants.EVT_PAGE_FINISHED:
@@ -294,13 +314,14 @@ public class MeasurementActivity extends AppCompatActivity {
 
     public JSONObject initData(@NonNull Context context) {
         System.out.println("trace | Start initData");
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
         boolean is_home_network;
         JSONObject obj = new JSONObject();
 
         String home_ssid = preference.getString("home_ssid", getResources().getString(R.string.ssid_default));
         is_home_network = home_ssid.equalsIgnoreCase(cur_ssid);
         System.out.println("trace | cur_ssid: " + cur_ssid + " | home_ssid:" + home_ssid + " | " + is_home_network);
-
+        System.out.println("trace | interval:" + preference.getString("edit_measurement", "12") + " | " + preference.getString("esp_ip", "N/A"));
         try {
             obj.put("android_os", android.os.Build.VERSION.SDK_INT);
             obj.put("language", "en");

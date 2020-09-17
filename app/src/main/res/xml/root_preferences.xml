@@ -36,6 +36,14 @@
         <SwitchPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/ic_clear"
+            app:key="sw_clear_cache"
+            app:summaryOff="@string/cache_summary_off"
+            app:summaryOn="@string/cache_summary_on"
+            app:title="@string/cache_title" />
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:defaultValue="false"
             android:icon="@drawable/ic_settings_applications"
             android:key="sw_reset_default"
@@ -66,7 +74,7 @@
         <EditTextPreference
             android:defaultValue="@string/edit_esp_ip_default"
             android:icon="@drawable/ic_node_server"
-            android:key="edit_esp_ip"
+            android:key="esp_ip"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/edit_esp_ip_default"
