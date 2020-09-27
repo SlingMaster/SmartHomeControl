@@ -17,13 +17,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 import com.jsc.smarthome.html.CustomWebView;
-
-import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
     private static final boolean AUTO_HIDE = true;
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private final Handler mHideHandler = new Handler();
     private boolean mVisible;
     public static SharedPreferences preference;
-    private AppBarConfiguration mAppBarConfiguration;
+//    private AppBarConfiguration mAppBarConfiguration;
     ViewGroup webContainer;
     @Nullable
     CustomWebView newWebView;
@@ -60,12 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     // ===================================
-    private final Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
+    private final Runnable mHideRunnable = this::hide;
     // ===================================
     private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
@@ -82,88 +74,51 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mVisible = true;
         setContentView(R.layout.activity_main);
+        preference = PreferenceManager.getDefaultSharedPreferences(this);
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        NavigationView navigationView = findViewById(R.id.nav_view);
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        mAppBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_settings)
-//                .setDrawerLayout(drawer)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-//        NavigationUI.setupWithNavController(navigationView, navController);
-
-
-//        mainRelative.addView(сюда);
-//        setContentView(R.layout.activity_web);
         webContainer = findViewById(R.id.new_web_container);
         newWebView = createWebView();
         webContainer.addView(newWebView);
+        newWebView.clearCache(preference.getBoolean("sw_clear_cache", false));
         // load screen -----------------------------
         loadHtml(getResources().getString(R.string.sh_url));
 
-
-
-//        newWebView.clearCache(preference.getBoolean("sw_clear_cache", false));
-
-
         // Set behavior of Navigation drawer
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            // This method will trigger on item Click of navigation menu
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                // Set item in checked state
-                menuItem.setChecked(true);
-                int id = menuItem.getItemId();
-//                int cmd;
-                switch (id) {
-                    case R.id.nav_br:
-                        loadHtml(getResources().getString(R.string.br_url));
-                        break;
-                    case R.id.nav_sh:
-                        loadHtml(getResources().getString(R.string.sh_url));
-                        break;
-                    case R.id.nav_stats:
-                        loadHtml(getResources().getString(R.string.stats_url));
-                        break;
-                    case R.id.nav_test:
-                        showMeasurement(getApplicationContext());
-                        break;
-                    case R.id.nav_settings:
-                        showConfig(getApplicationContext());
-                        break;
-                    default:
-                        break;
-                }
-                System.out.println("Press menu : " + id);
-//            Toast.makeText(getApplicationContext(), "Press menu" + id, Toast.LENGTH_LONG).show();
-//            showConfig(getApplicationContext());
-//            mWeb.sendCommand(cmd);
-                // Closing drawer on item click
-//            drawer.closeDrawers();
-                DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
+        // This method will trigger on item Click of navigation menu
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            boolean debug = preference.getBoolean("sw_dev_mode", false);
+            // Set item in checked state
+            menuItem.setChecked(true);
+            int id = menuItem.getItemId();
+            switch (id) {
+                case R.id.nav_sh:
+                    loadHtml(debug ? getResources().getString(R.string.debug_sh_url) : getResources().getString(R.string.sh_url));
+                    break;
+                case R.id.nav_br:
+                    loadHtml(debug ? getResources().getString(R.string.debug_br_url) : getResources().getString(R.string.br_url));
+                    break;
+                case R.id.nav_stats:
+                    loadHtml(debug ? getResources().getString(R.string.debug_stats_url) : getResources().getString(R.string.stats_url));
+                    break;
+                case R.id.nav_test:
+                    showMeasurement(getApplicationContext());
+                    break;
+                case R.id.nav_settings:
+                    showConfig(getApplicationContext());
+                    break;
+                default:
+                    break;
             }
-        });
 
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        });
     }
 
     // ===================================
@@ -232,55 +187,11 @@ public class MainActivity extends AppCompatActivity {
 
     // ===================================
     protected void loadHtml(String url) {
-//        String root = preference.getBoolean("sw_debug_mode", false)
-//                ? getResources().getString(R.string.root_debug) :
-//                getResources().getString(R.string.root);
-        System.out.println("trace | loadHtml:" + url);
-
-        newWebView.loadUrl(url);
+        if (newWebView != null) {
+            System.out.println("trace | loadHtml:" + url);
+            newWebView.loadUrl(url);
+        }
     }
-
-
-
-    // ===================================================
-    // HTML APP request events
-    // ===================================================
-//    public void webViewEvents(int request, final String jsonString) {
-//        JSONObject requestContent = new JSONObject();
-//        System.out.println("webViewEvents | Request : " + request + "\n" + jsonString);
-//        JSONObject uiRequest;
-//        try {
-//            uiRequest = new JSONObject(jsonString);
-//            if (uiRequest.has("request")) {
-//                requestContent = uiRequest.getJSONObject("request");
-//            } else {
-//                requestContent = uiRequest;
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("Request : " + request);
-//        switch (request) {
-//            case JSConstants.EVT_MAIN_TEST:
-//                assert newWebView != null;
-//                newWebView.callbackToUI(JSConstants.EVT_MAIN_TEST, CustomWebView.createResponse(requestContent, null));
-//                break;
-//            case JSConstants.EVT_READY:
-//                assert newWebView != null;
-//                newWebView.callbackToUI(JSConstants.CMD_INIT, CustomWebView.createResponse(requestContent, initData(this)));
-//                break;
-//            case JSConstants.EVT_PAGE_FINISHED:
-//                onPageFinished();
-//                break;
-//            default:
-//                System.out.println("Unsupported command : " + request);
-//                break;
-//        }
-//    }
-
-
-
 
     // ===================================
     @Override
@@ -303,12 +214,4 @@ public class MainActivity extends AppCompatActivity {
         configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(configIntent);
     }
-    // ===================================
-
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-//                || super.onSupportNavigateUp();
-//    }
 }

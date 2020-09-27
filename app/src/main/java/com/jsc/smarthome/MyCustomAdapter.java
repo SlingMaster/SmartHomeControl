@@ -67,7 +67,7 @@ public class MyCustomAdapter extends BaseAdapter {
         String stringItem = mListItems.get(position);
         // int bgColor = R.drawable.item_exo_bg;
         // int textColor = R.color.colorPrimary;
-        int iconID = R.drawable.ic_menu_test_measurement;
+        int iconID = R.drawable.ic_link_test;
 
 
         if (stringItem != null) {
@@ -87,19 +87,35 @@ public class MyCustomAdapter extends BaseAdapter {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                itemDate.setText(obj.optString("date"));
-                itemTime.setText(obj.optString("time"));
-                String str_tmp = "Time: " + obj.optString("time");
-                itemTime.setText(str_tmp);
-                str_tmp = obj.optString("value") + "°C";
-                itemValue.setText(str_tmp);
-                itemIcon.setColorFilter(getIconColor(obj.optString("attribute")));
-                itemDelta.setText(obj.optString("delta"));
-                if (obj.optBoolean("warmer")) {
-                    itemDelta.setTextColor(ContextCompat.getColor(context, R.color.item_text_warmer));
+                String date = obj.optString("date");
+                if (date.length() < 7) {
+                    itemDate.setText("");
+                    itemValue.setTextColor(ContextCompat.getColor(context, R.color.colorIconsTitle));
+                    itemValue.setText(date);
+                    itemTime.setText("");
+                    itemIcon.setImageResource(R.drawable.ic_title);
+                    itemDelta.setText("");
+                    view.setBackgroundResource(R.color.colorTitleList);
+                    itemIcon.setColorFilter(getIconColor(obj.optString("")));
+
+                } else {
+                    itemDate.setText(date);
+                    itemValue.setTextColor(ContextCompat.getColor(context, R.color.item_text_date));
+                    itemTime.setText(obj.optString("time"));
+                    String str_tmp = "Time: " + obj.optString("time");
+                    itemTime.setText(str_tmp);
+                    str_tmp = obj.optString("value") + "°C";
+                    itemValue.setText(str_tmp);
+                    itemIcon.setColorFilter(getIconColor(obj.optString("attribute")));
+                    itemDelta.setText(obj.optString("delta"));
+                    view.setBackgroundResource(R.color.colorPrimary);
+
+                    if (obj.optBoolean("warmer")) {
+                        itemDelta.setTextColor(ContextCompat.getColor(context, R.color.item_text_warmer));
+                    } else {
+                        itemDelta.setTextColor(ContextCompat.getColor(context, R.color.colorIconsTitle));
+                    }
                 }
-                // view.setBackgroundResource(bgColor);
-                // itemName.setBackgroundColor(ContextCompat.getColor(context, bgColor));
             }
         }
         // this method must return the view corresponding to the data at the specified position.

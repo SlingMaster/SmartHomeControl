@@ -1,14 +1,57 @@
 apply plugin: 'com.android.application'
 
 android {
+/**
+ * increment versionCode
+ * add in defaultConfig section
+ * defaultConfig {*   versionCode _versionCode
+ *  versionName _versionName
+ *}*/
+    def _versionCode = 0
+    def versionPropsFile = file('version.properties')
+    Properties versionProps = new Properties()
+    if (versionPropsFile.exists())
+        versionProps.load(new FileInputStream(versionPropsFile))
+    def _patch = (versionProps['PATCH'] ?: "0").toInteger() + 1
+    def _major = (versionProps['MAJOR'] ?: "0").toInteger()
+    def _minor = (versionProps['MINOR'] ?: "0").toInteger()
+    List<String> runTasks = gradle.startParameter.getTaskNames()
+    def value = 0
+    for (String item : runTasks)
+        if (item.contains("assembleRelease")) {
+            value = 1
+        }
+    _versionCode = (versionProps['VERSION_CODE'] ?: "0").toInteger() + value
+    if (_patch == 99) {
+        _patch = 0
+        _minor = _minor + 1
+    }
+    if (_minor == 99) {
+        _minor = 0
+        _major = _major + 1
+    }
+    versionProps['MAJOR'] = _major.toString()
+    versionProps['MINOR'] = _minor.toString()
+    versionProps['PATCH'] = _patch.toString()
+    versionProps['VERSION_CODE'] = _versionCode.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
+    def _versionName = "${_major}.${_versionCode}.${_minor}.${_patch}"
+    signingConfigs {
+        config {
+            storeFile file('F:\\ASProject\\KeySigning\\as_jsc.jks')
+            keyAlias 'AS'
+            keyPassword 'SlingMasterJSC'
+            storePassword 'SlingMaster'
+        }
+    }
     compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.jsc.smarthome"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName _versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

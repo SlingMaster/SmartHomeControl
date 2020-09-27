@@ -16,4 +16,23 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_top_margin"
         android:layout_marginBottom="@dimen/activity_bottom_margin" />
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/btn_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/splash_margin"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_marginBottom="@dimen/about_ic_size">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_test"-->
+<!--            style="?android:attr/buttonBarButtonStyle"-->
+<!--            android:layout_width="@dimen/splash_margin"-->
+<!--            android:layout_height="@dimen/splash_margin"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:background="@drawable/ic_gr_debug"-->
+<!--            android:focusable="false"-->
+<!--            android:gravity="bottom|center_horizontal"-->
+<!--            android:visibility="visible" />-->
+<!--    </FrameLayout>-->
 </FrameLayout>

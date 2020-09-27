@@ -12,28 +12,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_sh"
-            android:icon="@drawable/ic_menu_smart_home"
+            android:icon="@drawable/ic_menu_smart"
             android:title="@string/menu_smart_home" />
         <item
             android:id="@+id/nav_br"
-            android:icon="@drawable/ic_menu_bathroom_control"
+            android:icon="@drawable/ic_menu_bathroom"
             android:title="@string/menu_bath_room" />
         <item
             android:id="@+id/nav_stats"
-            android:icon="@drawable/ic_menu_statistic"
+            android:icon="@drawable/ic_menu_hot_water"
             android:title="@string/menu_statistic" />
         <item
             android:id="@+id/nav_test"
-            android:icon="@drawable/ic_menu_test_measurement"
+            android:icon="@drawable/ic_menu_measurement"
             android:title="@string/menu_test" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_preferences"
+            android:icon="@drawable/ic_pref_settings"
             android:title="@string/menu_settings" />
     </group>
 </menu>
-
-    <!--        android:iconTint="@color/colorDebugIcon"-->
-    <!--        android:iconTintMode="src_over"-->
-    <!--            android:checkable="false"-->
-    <!--            android:checked="true"-->
