@@ -2,19 +2,17 @@
 <resources>
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-
+    <!--    <color name="colorAccent">#FF0000</color>-->
     <color name="colorTextDesc">#B0BEC5</color>
     <color name="navBar">#000000</color>
+    <color name="drawerIcons">#0000ff</color>
+    <color name="small_text">#607d8b</color>
+    <color name="colorIconsTitle">#00b8d4</color>
+    <color name="colorIcons">#00796b</color>
 
-    <color name="small_text">#455a64</color>
-    <color name="colorIcons">#A9A135</color>
-    <color name="colorIconsTitle">#03DAC5</color>
-
-    <color name="nav_iconTint">#00B8D1</color>
+    <color name="nav_iconTint">@color/nav_TextColor</color>
     <color name="nav_TextColor">@android:color/white</color>
     <color name="colorTitleList">#37474f</color>
-    <color name="colorDebugIcon">#f9a825</color>
     <color name="item_text_date">#cfd8dc</color>
     <color name="item_text_time">#7D929D</color>
     <color name="item_text_delta">#0faba5</color>

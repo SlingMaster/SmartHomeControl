@@ -18,7 +18,7 @@
 
     <!-- context margin-->
     <dimen name="item_height">56dp</dimen>
-    <dimen name="item_text_width">180dp</dimen>
+    <dimen name="item_text_width">220dp</dimen>
     <dimen name="item_primary_font_size">14sp</dimen>
     <dimen name="item_secondary_font_size">14sp</dimen>
     <dimen name="fab_margin">16dp</dimen>

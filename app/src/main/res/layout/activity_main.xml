@@ -11,14 +11,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:fitsSystemWindows="false"
+    app:layout_anchorGravity="bottom|end"
     tools:context=".MainActivity">
-    
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
+
         <FrameLayout
             android:id="@+id/new_web_container"
             android:layout_width="match_parent"
@@ -26,18 +29,21 @@
             android:layout_marginTop="@dimen/activity_top_margin"
             android:layout_marginBottom="@dimen/activity_bottom_margin"
             android:fitsSystemWindows="false" />
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@drawable/drawer_gradient"
+
+            android:foreground="@drawable/ic_android"
+            android:foregroundGravity="bottom|right|center_horizontal"
+            app:headerLayout="@layout/nav_header_main"
             app:itemIconPadding="@dimen/nav_IconPadding"
             app:itemIconTint="@color/nav_iconTint"
             app:itemTextColor="@color/nav_TextColor"
-            app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_drawer" />
-
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </FrameLayout>
