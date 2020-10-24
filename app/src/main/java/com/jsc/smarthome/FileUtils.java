@@ -5,7 +5,9 @@
 
 package com.jsc.smarthome;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -13,10 +15,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+
+import androidx.documentfile.provider.DocumentFile;
 
 class FileUtils {
     static String BD_NAME = "data_base.json";
+    // ===================================
+    // является ли внешнее хранилище только для чтения
+    static boolean isReadOnly() {
+        String storageState = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState);
+    }
+
+    // ===================================
+    // проверяем есть ли доступ к внешнему хранилищу
+    static boolean isAvailable() {
+        String storageState = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(storageState);
+    }
     // ===================================
     static void writeToFile(String data, Context appContext) {
         try {
