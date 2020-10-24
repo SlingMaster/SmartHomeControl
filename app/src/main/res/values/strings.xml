@@ -26,6 +26,8 @@
     <string name="menu_smart_home">Smart Home Control</string>
     <string name="menu_statistic">Hot Water Statistics</string>
     <string name="menu_test">Test Measurement</string>
+    <string name="menu_export">Export Database</string>
+    <string name="menu_import">Import Database</string>
     <string name="menu_settings">Preferences</string>
 
 
@@ -81,6 +83,13 @@
     <string name="menu_item_clear">Clear</string>
     <string name="msg_list_records">List records is empty</string>
 
+    <!-- dialog import -->
+    <string name="title_import_dialog">Import Database from SD</string>
+    <string name="message_import_dialog">Replace the current database with the imported one?</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+
+    <string name="msg_export">Database saved to SD</string>
     <!-- dialog  exit app -->
     <string name="title_dialog">Delete Records in Database</string>
     <string name="message_dialog">Do you want to delete the last record or all entries in the database?</string>

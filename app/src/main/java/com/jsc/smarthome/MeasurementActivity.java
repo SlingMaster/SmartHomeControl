@@ -39,13 +39,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-//import java.security.acl.Permission;
 
 public class MeasurementActivity extends AppCompatActivity {
     SharedPreferences preference;
     final static int REQUEST_CODE_CLEAR = 1;
     static String cur_ssid;
-
 
     private static final boolean AUTO_HIDE = true;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
@@ -142,6 +140,7 @@ public class MeasurementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_measurement);
         preference = PreferenceManager.getDefaultSharedPreferences(this);
 
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         cur_ssid = getCurrentSsid(getApplicationContext());
 
@@ -158,6 +157,7 @@ public class MeasurementActivity extends AppCompatActivity {
         System.out.println("trace | debug : " + debug + " | url : " + url);
         loadHtml(url);
     }
+
 
     // ===================================
     @Override
@@ -238,49 +238,11 @@ public class MeasurementActivity extends AppCompatActivity {
 
 
         // load json BD results ------------------------------
-
         FileUtils.writeToFile("", getApplicationContext());
         String strBD = FileUtils.readFromFile(getApplicationContext());
 
         if (strBD.equalsIgnoreCase("")) {
             jsonDataBaseArray = new JSONArray();
-            // restore database -------
-//            jsonDataBaseArray.put("{\"date\":\"18 January 2018\",\"time\":\"11:47\",\"value\":\"37.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"14 February 2018\",\"time\":\"12:47\",\"value\":\"35.0\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 2.2°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"16 March 2018\",\"time\":\"10:20\",\"value\":\"38.5\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 2.5°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"21 April 2018\",\"time\":\"18:02\",\"value\":\"37.2\",\"attribute\":\"warm\",\"warmer\":false,\"delta\":\"Δ -0.6°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"16 May 2018\",\"time\":\"09:48\",\"value\":\"33.1\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.3°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"19 June 2018\",\"time\":\"11:05\",\"value\":\"35.9\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 0.5°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"18 July 2018\",\"time\":\"11:46\",\"value\":\"26.0\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 0.1°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"21 August 2018\",\"time\":\"11:23\",\"value\":\"35.4\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 0.6°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"17 September 2018\",\"time\":\"14:12\",\"value\":\"33.6\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -0.1°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"17 October 2018\",\"time\":\"07:59\",\"value\":\"38.9\",\"attribute\":\"warm\",\"warmer\":false,\"delta\":\"Δ -1.1°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"19 November 2018\",\"time\":\"12:33\",\"value\":\"34.1\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.1°C\",\"action\":\"save result\"}");
-//            jsonDataBaseArray.put("{\"date\":\"17 December 2018\",\"time\":\"11:31\",\"value\":\"39.8\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 0.6°C\",\"action\":\"save result\"}");
-            // 2019--------------------
-            jsonDataBaseArray.put("{\"date\":\"18 January 2019\",\"time\":\"11:47\",\"value\":\"39.8\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"14 February 2019\",\"time\":\"12:47\",\"value\":\"38.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 2.2°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"16 March 2019\",\"time\":\"10:20\",\"value\":\"40.0\",\"attribute\":\"hot\",\"warmer\":true,\"delta\":\"Δ 2.5°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"21 April 2019\",\"time\":\"11:02\",\"value\":\"36.0\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -0.6°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"16 May 2019\",\"time\":\"09:48\",\"value\":\"34.0\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.3°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"19 June 2019\",\"time\":\"11:05\",\"value\":\"37.0\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 0.5°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"18 July 2019\",\"time\":\"11:46\",\"value\":\"39.6\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 0.1°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"21 August 2019\",\"time\":\"11:23\",\"value\":\"35.2\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 0.6°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"17 September 2019\",\"time\":\"14:12\",\"value\":\"35.2\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -0.1°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"17 October 2019\",\"time\":\"07:59\",\"value\":\"36.4\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -1.1°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"19 November 2019\",\"time\":\"12:33\",\"value\":\"31.9\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.1°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"17 December 2019\",\"time\":\"11:31\",\"value\":\"32.0\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 0.6°C\",\"action\":\"save result\"}");
-            // 2020--------------------
-            jsonDataBaseArray.put("{\"date\":\"09 January 2020\",\"time\":\"11:08\",\"value\":\"31.0\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -0.4°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"05 February 2020\",\"time\":\"11:19\",\"value\":\"36.0\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -0.6°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"05 March 2020\",\"time\":\"11:00\",\"value\":\"33.0\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ -0.2°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"07 April 2020\",\"time\":\"12:01\",\"value\":\"--.-\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ 0.0°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"06 May 2020\",\"time\":\"11:48\",\"value\":\"--.-\",\"attribute\":\"cool\",\"warmer\":false,\"delta\":\"Δ 0.0°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"09 June 2020\",\"time\":\"11:30\",\"value\":\"38.0\",\"attribute\":\"warm\",\"warmer\":true,\"delta\":\"Δ 0.6°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"09 July 2020\",\"time\":\"11:05\",\"value\":\"39.1\",\"attribute\":\"warm\",\"warmer\":false,\"delta\":\"Δ -0.4°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"05 August 2020\",\"time\":\"10:20\",\"value\":\"33.7\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 0.5°C\",\"action\":\"save result\"}");
-            jsonDataBaseArray.put("{\"date\":\"07 September 2020\",\"time\":\"12:15\",\"value\":\"39.7\",\"attribute\":\"warm\",\"warmer\":false,\"delta\":\"Δ -0.4°C\",\"action\":\"save result\"}");
-
             FileUtils.writeToFile(jsonDataBaseArray.toString(), getApplicationContext());
         } else {
             jsonDataBaseArray = parseFileDataBase(strBD);
@@ -319,7 +281,6 @@ public class MeasurementActivity extends AppCompatActivity {
                 break;
             case JSConstants.CMD_MEASUREMENT_START:
                 System.out.println("trace | MEASUREMENT START | " + request + " \n" + jsonString);
-
                 break;
             case JSConstants.CMD_MEASUREMENT_RESULT:
                 jsonDataBaseArray.put(jsonString);

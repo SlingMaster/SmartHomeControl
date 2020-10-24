@@ -7,19 +7,29 @@
 package com.jsc.smarthome;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.jsc.smarthome.html.CustomWebView;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +37,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private final Handler mHideHandler = new Handler();
     private boolean mVisible;
     public static SharedPreferences preference;
-//    private AppBarConfiguration mAppBarConfiguration;
+    //    private AppBarConfiguration mAppBarConfiguration;
+    AlertDialog.Builder mAlertDialog;
     ViewGroup webContainer;
     @Nullable
     CustomWebView newWebView;
@@ -81,6 +91,25 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+        mAlertDialog = new AlertDialog.Builder(this);
+        mAlertDialog.setIcon(R.drawable.ic_warning);
+        mAlertDialog.setTitle(R.string.title_import_dialog);
+        mAlertDialog.setMessage(R.string.message_import_dialog);
+
+        mAlertDialog.setPositiveButton(R.string.button_yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                // import database ------
+            }
+        });
+        mAlertDialog.setNegativeButton(R.string.button_no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                dialog.cancel();
+            }
+        });
+
+        mAlertDialog.setCancelable(true);
+        // ----------------------------------------
+
         webContainer = findViewById(R.id.new_web_container);
         newWebView = createWebView();
         webContainer.addView(newWebView);
@@ -95,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             // Set item in checked state
             menuItem.setChecked(true);
             int id = menuItem.getItemId();
+            File mFile = new File(getExternalFilesDir(""), FileUtils.BD_NAME);
             switch (id) {
                 case R.id.nav_sh:
                     loadHtml(debug ? getResources().getString(R.string.debug_sh_url) : getResources().getString(R.string.sh_url));
@@ -107,6 +137,45 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_test:
                     showMeasurement(getApplicationContext());
+                    break;
+                case R.id.nav_export:
+                    String strBD = FileUtils.readFromFile(getApplicationContext());
+                    System.out.println("trace | readFromFile | • DB • " + strBD);
+
+                    System.out.println("trace | mFile : " + mFile);
+                    if (FileUtils.isAvailable() || !FileUtils.isReadOnly()) {
+                        // если доступ есть, то создаем файл в ExternalStorage
+                        try {
+                            FileOutputStream fos = new FileOutputStream(mFile);
+                            fos.write(strBD.getBytes());
+                            fos.close();
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.msg_export) + " : \n" + mFile, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case R.id.nav_import:
+                    if (FileUtils.isAvailable() || !FileUtils.isReadOnly()) {
+                        String mData = "";
+                        try {
+                            FileInputStream fis = new FileInputStream(mFile);
+                            DataInputStream in = new DataInputStream(fis);
+                            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                            String strLine;
+                            // считываем данные с файла в mData
+                            while ((strLine = br.readLine()) != null) {
+                                mData += strLine;
+                            }
+                            in.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("trace | mData : " + mData);
+                        // show dialog window
+                        mAlertDialog.show();
+                        // FileUtils.writeToFile(mData, getApplicationContext());
+                    }
                     break;
                 case R.id.nav_settings:
                     showConfig(getApplicationContext());
