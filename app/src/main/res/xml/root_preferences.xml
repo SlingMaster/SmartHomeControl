@@ -80,7 +80,6 @@
         app:title="@string/dev_url_header">
 
         <EditTextPreference
-            android:defaultValue="true"
             android:icon="@drawable/ic_link_smart"
             android:inputType="textCapWords"
             android:key="dev_sh_url"
@@ -88,10 +87,10 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/debug_sh_url"
-            android:title="@string/edit_dev_sh"
-            app:useSimpleSummaryProvider="true" />
+            android:title="@string/edit_dev_sh" />
+
+
         <EditTextPreference
-            android:defaultValue="true"
             android:icon="@drawable/ic_link_fan"
             android:inputType="textCapWords"
             android:key="dev_br_url"
@@ -101,7 +100,6 @@
             android:summary="@string/debug_br_url"
             android:title="@string/edit_dev_br" />
         <EditTextPreference
-            android:defaultValue="true"
             android:icon="@drawable/ic_link_statistic"
             android:inputType="textCapWords"
             android:key="dev_stats_url"
@@ -109,10 +107,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/debug_stats_url"
-            android:title="@string/edit_dev_stats"
-            app:useSimpleSummaryProvider="true" />
+            android:title="@string/edit_dev_stats" />
         <EditTextPreference
-            android:defaultValue="true"
             android:icon="@drawable/ic_link_test"
             android:inputType="textCapWords"
             android:key="dev_test_url"
@@ -120,8 +116,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/debug_test_url"
-            android:title="@string/edit_dev_test"
-            app:useSimpleSummaryProvider="true" />
+            android:title="@string/edit_dev_test" />
     </PreferenceCategory>
 
 </PreferenceScreen>
