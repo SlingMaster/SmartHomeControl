@@ -229,25 +229,21 @@ public class MeasurementActivity extends AppCompatActivity {
 
     // ===================================
     void onPageFinished() {
-//        Handler handler = new Handler();
-//        Toast.makeText(getBaseContext(), "TimeOut • onPageFinished", Toast.LENGTH_SHORT).show();
-
-//       handler.postDelayed(() ->
-//                Toast.makeText(getBaseContext(), "TimeOut • onPageFinished",
-//                        Toast.LENGTH_SHORT).show() ,1000);
+        // Handler handler = new Handler();
+        // Toast.makeText(getBaseContext(), "TimeOut • onPageFinished", Toast.LENGTH_SHORT).show();
+        // handler.postDelayed(() ->
+        // Toast.makeText(getBaseContext(), "TimeOut • onPageFinished", Toast.LENGTH_SHORT).show() ,1000);
 
 
         // load json BD results ------------------------------
-        FileUtils.writeToFile("", getApplicationContext());
         String strBD = FileUtils.readFromFile(getApplicationContext());
-
         if (strBD.equalsIgnoreCase("")) {
             jsonDataBaseArray = new JSONArray();
+            // create new data base -------
             FileUtils.writeToFile(jsonDataBaseArray.toString(), getApplicationContext());
         } else {
             jsonDataBaseArray = parseFileDataBase(strBD);
         }
-        System.out.println("trace | Read From File : " + FileUtils.readFromFile(getApplicationContext()));
     }
 
 
