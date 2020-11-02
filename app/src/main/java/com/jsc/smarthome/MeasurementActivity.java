@@ -168,10 +168,6 @@ public class MeasurementActivity extends AppCompatActivity {
                 String idClear = data.getStringExtra("clear");
                 if (idClear != null && idClear.equalsIgnoreCase("all_records")) {
                     jsonDataBaseArray = new JSONArray();
-                    // test ===========
-//                    String itemStr = "{\"date\":\"10 Desember 2019\",\"time\":\"11:47\",\"value\":\"32.6\",\"attribute\":\"cool\",\"warmer\":true,\"delta\":\"Δ 1.2°C\",\"action\":\"save result\"}\"";
-//                    jsonDataBaseArray.put(itemStr);
-                    //                    // ================
                 } else {
                     jsonDataBaseArray.remove(jsonDataBaseArray.length() - 1);
                 }
@@ -300,7 +296,7 @@ public class MeasurementActivity extends AppCompatActivity {
 
     public JSONObject initData(@NonNull Context context) {
         System.out.println("trace | Start initData");
-        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         boolean is_home_network;
         JSONObject obj = new JSONObject();
 
