@@ -9,7 +9,6 @@ package com.jsc.smarthome;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,12 +26,12 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -44,12 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private boolean mVisible;
     public static SharedPreferences preference;
-    //    private AppBarConfiguration mAppBarConfiguration;
     AlertDialog.Builder mAlertDialog;
     ViewGroup webContainer;
-    @Nullable
     CustomWebView newWebView;
     // ===================================
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -82,31 +78,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mVisible = true;
         setContentView(R.layout.activity_main);
         preference = PreferenceManager.getDefaultSharedPreferences(this);
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
-
+        Permission.requestMultiplePermissions(this, Permission.PERMISSION_REQUEST_CODE);
         mAlertDialog = new AlertDialog.Builder(this);
         mAlertDialog.setIcon(R.drawable.ic_warning);
         mAlertDialog.setTitle(R.string.title_import_dialog);
         mAlertDialog.setMessage(R.string.message_import_dialog);
 
-        mAlertDialog.setPositiveButton(R.string.button_yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                // import database ------
-            }
+        mAlertDialog.setPositiveButton(R.string.button_yes, (dialog, arg1) -> {
+            // import database ------
+            // save database to application directory
+            UpdateDB();
         });
-        mAlertDialog.setNegativeButton(R.string.button_no, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                dialog.cancel();
-            }
-        });
-
+        mAlertDialog.setNegativeButton(R.string.button_no, (dialog, arg1) -> dialog.cancel());
         mAlertDialog.setCancelable(true);
         // ----------------------------------------
 
@@ -124,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             // Set item in checked state
             menuItem.setChecked(true);
             int id = menuItem.getItemId();
-            File mFile = new File(getExternalFilesDir(""), FileUtils.BD_NAME);
+
             switch (id) {
                 case R.id.nav_sh:
                     loadHtml(debug ? getResources().getString(R.string.debug_sh_url) : getResources().getString(R.string.sh_url));
@@ -139,43 +125,26 @@ public class MainActivity extends AppCompatActivity {
                     showMeasurement(getApplicationContext());
                     break;
                 case R.id.nav_export:
+                    // read database from application directory --
+                    File exportFile = new File(getExternalFilesDir(""), FileUtils.BD_EXPORT);
                     String strBD = FileUtils.readFromFile(getApplicationContext());
                     System.out.println("trace | readFromFile | • DB • " + strBD);
-
-                    System.out.println("trace | mFile : " + mFile);
                     if (FileUtils.isAvailable() || !FileUtils.isReadOnly()) {
-                        // если доступ есть, то создаем файл в ExternalStorage
                         try {
-                            FileOutputStream fos = new FileOutputStream(mFile);
+                            FileOutputStream fos = new FileOutputStream(exportFile);
                             fos.write(strBD.getBytes());
                             fos.close();
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.msg_export) + " : \n" + mFile, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.msg_export) + " : \n" + exportFile, Toast.LENGTH_LONG).show();
+                        } catch (FileNotFoundException e) {
+                            System.out.println("trace | File not found: " + e.toString());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                     break;
                 case R.id.nav_import:
-                    if (FileUtils.isAvailable() || !FileUtils.isReadOnly()) {
-                        String mData = "";
-                        try {
-                            FileInputStream fis = new FileInputStream(mFile);
-                            DataInputStream in = new DataInputStream(fis);
-                            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                            String strLine;
-                            // считываем данные с файла в mData
-                            while ((strLine = br.readLine()) != null) {
-                                mData += strLine;
-                            }
-                            in.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("trace | mData : " + mData);
-                        // show dialog window
-                        mAlertDialog.show();
-                        // FileUtils.writeToFile(mData, getApplicationContext());
-                    }
+                    // show dialog window
+                    mAlertDialog.show();
                     break;
                 case R.id.nav_settings:
                     showConfig(getApplicationContext());
@@ -188,6 +157,37 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
+    }
+
+    // ===================================
+    private void UpdateDB() {
+        String mData = "";
+        File importFile = new File(getExternalFilesDir(""), FileUtils.BD_EXPORT);
+        if (FileUtils.isAvailable() || !FileUtils.isReadOnly()) {
+            //read database from ExternalStorage to mData
+            // \ExternalStorage\Android\data\package name
+            try {
+                FileInputStream fis = new FileInputStream(importFile);
+                DataInputStream in = new DataInputStream(fis);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                String strLine;
+
+                while ((strLine = br.readLine()) != null) {
+                    mData += strLine;
+                }
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (mData.equalsIgnoreCase("")) {
+            Toast.makeText(getBaseContext(), R.string.db_empty, Toast.LENGTH_LONG).show();
+        } else {
+            // System.out.println("trace | mData : " + mData);
+            FileUtils.writeToFile(mData, getApplicationContext());
+            Toast.makeText(getBaseContext(), R.string.db_updated, Toast.LENGTH_LONG).show();
+        }
     }
 
     // ===================================
@@ -210,13 +210,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ===================================
-    private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
-    }
+//    private void toggle() {
+//        if (mVisible) {
+//            hide();
+//        } else {
+//            show();
+//        }
+//    }
 
     // ===================================
     private void hide() {
@@ -225,16 +225,15 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mVisible = false;
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
     // ===================================
-    @SuppressLint("InlinedApi")
-    private void show() {
-        mVisible = true;
-        mHideHandler.removeCallbacks(mHidePart2Runnable);
-    }
+//    @SuppressLint("InlinedApi")
+//    private void show() {
+//        mVisible = true;
+//        mHideHandler.removeCallbacks(mHidePart2Runnable);
+//    }
 
     // ===================================
     private void delayedHide(int delayMillis) {
@@ -248,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     @NonNull
     private CustomWebView createWebView() {
         CustomWebView view = new CustomWebView(this);
-//        view.setWebEventsListener(this::webViewEvents);
+        // view.setWebEventsListener(this::webViewEvents);
         // SIGNAL 11 SIGSEGV crash Android
         view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         return view;

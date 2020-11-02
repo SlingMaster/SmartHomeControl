@@ -22,6 +22,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 class FileUtils {
     static String BD_NAME = "data_base.json";
+    static String BD_EXPORT = "db.json";
     // ===================================
     // является ли внешнее хранилище только для чтения
     static boolean isReadOnly() {
